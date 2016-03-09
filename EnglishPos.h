@@ -15,7 +15,7 @@ using namespace std;
 namespace fox {
 
 enum EnglishPosType {
-	NOUN = 1, VERB, ADJ, ADV, PREP, CD, OTHER
+	FOX_NOUN = 1, FOX_VERB, FOX_ADJ, FOX_ADV, FOX_PREP, FOX_CD, FOX_OTHER
 };
 
 class EnglishPos {
@@ -32,19 +32,19 @@ public:
 	static EnglishPosType getType(const string& pos) {
 
 		if(pos=="NNP" || pos=="NNS" || pos=="NN" || pos=="NNPS")
-			return NOUN;
+			return FOX_NOUN;
 		else if(pos=="VB" || pos=="VBZ" || pos=="VBG" || pos=="VBD" || pos=="VBN" || pos=="VBP")
-			return VERB;
+			return FOX_VERB;
 		else if(pos=="JJ" || pos=="JJS"  || pos=="JJR")
-			return ADJ;
+			return FOX_ADJ;
 		else if(pos=="RB" || pos=="RBR"  || pos=="RBS")
-			return ADV;
+			return FOX_ADV;
 		else if(pos=="IN" || pos=="TO")
-			return PREP;
+			return FOX_PREP;
 		else if(pos=="CD")
-			return CD; // ordinal number are tagged as JJ
+			return FOX_CD; // ordinal number are tagged as JJ
 		else
-			return OTHER;
+			return FOX_OTHER;
 
 
 	}

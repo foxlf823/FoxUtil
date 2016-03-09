@@ -21,6 +21,7 @@ public:
 	int begin;
 	int end; // begin+length
 	string sst;
+	string lemma;
 
 	Token() {
 

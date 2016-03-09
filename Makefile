@@ -1,13 +1,13 @@
 cc=g++
 
 cflags = -O0 -g3 -w -funroll-loops  \
-			-I/home/fox/Downloads/wordnet-blast-master \
+			
 
-libs = /home/fox/Downloads/wordnet-blast-master/lib/libwnb.a
+libs = /usr/lib/libwordnet.a
 
 all: test
 
-test: test.cpp Token.h EnglishPos.h FoxUtil.h Sent.h Tokenizer.h SentSplitter.h  Word2Vec.h Punctuation.h
+test: test.cpp WordNet.h
 	$(cc) -o test test.cpp $(cflags) $(libs)
 
 	
