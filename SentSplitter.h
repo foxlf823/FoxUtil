@@ -65,7 +65,11 @@ public:
 					if(filterFullStopWithNumbers(sBeginIndex, s)) {
 						split = false;
 						step = 2;
-					} else if(0 != (matchedAbbrLength= filterAbbr(sBeginIndex, s))) {
+					} else if(filterOneUpperWord(sBeginIndex, s)) {
+						split = false;
+						step = 1;
+					}
+					else if(0 != (matchedAbbrLength= filterAbbr(sBeginIndex, s))) {
 						split = false;
 						step = matchedAbbrLength;
 					}
@@ -103,6 +107,24 @@ private:
 			return true;
 		else
 			return false;
+	 }
+
+	 bool filterOneUpperWord(uint currentIndex, const string& s) {
+		 if(currentIndex >=2) {
+			 char previous = s.at(currentIndex-1);
+			 char pp = s.at(currentIndex-2);
+			 if(isupper(previous) && pp==' ')
+				 return true;
+			 else
+				 return false;
+		 } else if(currentIndex == 1){
+			 char previous = s.at(currentIndex-1);
+			 if(isupper(previous))
+				 return true;
+			 else
+				 return false;
+		 } else
+			 return false;
 	 }
 
 	 uint filterAbbr(int currentIndex, const string& s) {

@@ -80,6 +80,32 @@ void split_bychar(const string& str, vector<string>& vec, const char separator =
 	  vec.push_back(word);
 }
 
+void split(const string& str, vector<string>& vec, const string& separatorSet) {
+	vector<string> separator;
+	fox::split_bychar(separatorSet, separator, '|');
+
+	vec.clear();
+	string::size_type pos1 = 0, pos2 = 0;
+	string word;
+	bool separatorFind = true;
+	while(separatorFind) {
+		separatorFind = false;
+		int temp = 99999;
+		for(int i=0;i<separator.size();i++) {
+			if((pos2 = str.find_first_of(separator[i].at(0), pos1)) != string::npos && pos2<temp) {
+				temp = pos2;
+				separatorFind = true;
+			}
+		}
+		pos2 = temp;
+		  word = str.substr(pos1, pos2 - pos1);
+		  pos1 = pos2 + 1;
+			vec.push_back(word);
+	}
+
+
+}
+
 class BrownClusterUtil {
 public:
 	map<string, string> word2cluster;

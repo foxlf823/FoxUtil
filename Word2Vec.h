@@ -10,6 +10,7 @@
 #include <ctime>
 #include <map>
 #include "FoxUtil.h"
+#include "Utf.h"
 
 using namespace std;
 
@@ -22,47 +23,61 @@ typedef union {
 
 class Word2Vec {
 public:
-	map<string, float*> wordMap;
+	map<string, float*>* wordMap;
 	int dimension;
 
 	Word2Vec() {
+		wordMap = new map<string, float*>();
 	}
 	virtual ~Word2Vec() {
 
-		for(map<string,float*>::iterator it = wordMap.begin();it != wordMap.end();it++) {
+		for(map<string,float*>::iterator it = wordMap->begin();it != wordMap->end();it++) {
 
 			delete it->second;
 		}
+
+		delete wordMap;
 	}
 
-	void loadFromBinFile(const string& file, bool bNorm) {
+	void loadFromBinFile(const string& file, bool bNorm, bool bStringNorm) {
 		ifstream ifs;
 		ifs.open(file.c_str());
+		unsigned long memused = 0;
 
 		int wordNumber = atoi(readString(ifs).c_str());
 		dimension = atoi(readString(ifs).c_str());
 		char nouse;
-
-		for(int i=0;i<wordNumber; i++) {
-			string word = readString(ifs);
-			float* vector = new float[dimension];
-			double norm = 0;
-			for(int j=0;j<dimension;j++) {
-				double temp = readFloat(ifs);
-				norm += temp*temp;
-				*(vector+j) = temp;
-			}
-
-			if(bNorm) {
-				norm = sqrt(norm);
-				for(int j=0;j<dimension;j++) {
-					*(vector+j) /= norm;
+		try {
+			for(int i=0;i<wordNumber; i++) {
+				string word = readString(ifs);
+				if(bStringNorm) {
+					word = normalize_to_lowerwithdigit(word);
 				}
-			}
+				float* vector = new float[dimension];
+				memused += 4*dimension;
+				double norm = 0;
+				for(int j=0;j<dimension;j++) {
+					double temp = readFloat(ifs);
+					norm += temp*temp;
+					*(vector+j) = temp;
+				}
 
-			wordMap.insert(map<string, float*>::value_type(word, vector));
-			ifs.read(&nouse, 1);
+				if(bNorm) {
+					norm = sqrt(norm);
+					for(int j=0;j<dimension;j++) {
+						*(vector+j) /= norm;
+					}
+				}
+
+				wordMap->insert(map<string, float*>::value_type(word, vector));
+				ifs.read(&nouse, 1);
+			}
 		}
+		catch (std::bad_alloc) {
+			cout<<"bad alloc: "<<memused<<endl;
+			exit(0);
+		}
+		//cout<<memused<<endl;
 
 		ifs.close();
 
@@ -91,9 +106,9 @@ public:
 				continue;
 			}
 
-			map<string, float*>::iterator itWordMap = wordMap.find(knownWords[i]);
+			map<string, float*>::iterator itWordMap = wordMap->find(knownWords[i]);
 			int id = IDs.find(knownWords[i])->second; // assume that IDs and knownWords are compatible
-			if(itWordMap != wordMap.end()) {
+			if(itWordMap != wordMap->end()) {
 				for(int j=0;j<dimension;j++) {
 					*(E+id*dimension+j) = *(itWordMap->second+j);
 					sum[j] += *(E+id*dimension+j);
