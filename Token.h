@@ -22,9 +22,12 @@ public:
 	int end; // begin+length
 	string sst;
 	string lemma;
+	int depGov;
+	string depType;
+	int sentIdx;
 
 	Token() {
-
+		sentIdx = -1;
 	}
 /*	virtual ~Token() {
 

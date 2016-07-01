@@ -175,8 +175,8 @@ bool isNumber(char c) {
 
 
 void randomInitEmb(double* emb, int embSize, const vector<string>& known, const string& unknownKey,
-		const map<string, int>& IDs, bool bNorm, double initRange) {
-	srand((uint)time(0));
+		const map<string, int>& IDs, bool bNorm, double initRange, int seed) {
+	srand((uint)seed);
 	int unknownID = -1;
 	double sum[embSize];
 	for(int i=0;i<embSize;i++)

@@ -50,6 +50,7 @@ public:
 		try {
 			for(int i=0;i<wordNumber; i++) {
 				string word = readString(ifs);
+
 				if(bStringNorm) {
 					word = normalize_to_lowerwithdigit(word);
 				}
@@ -132,7 +133,7 @@ public:
 			}
 		}
 
-
+		cout<<"oov from pretrained emb is "<<uninitialIds.size()*1.0/knownWords.size()<<endl;
 	}
 
 private:
