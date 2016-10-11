@@ -75,8 +75,11 @@ public:
 	// return the token idx of common ancestor, sdpA is the node idx of sdp from a to common ancestor
 	// if return -1, it should be root, if return -2, no common ancestor
 	static int getCommonAncestor(const vector<Token>& sent, int a, int b, vector<int>& sdpA, vector<int>& sdpB) {
-		if(a==b)
+		if(a==b) {
+			sdpA.push_back(a+1);
+			sdpB.push_back(b+1);
 			return a;
+		}
 
 		if(sent[a].depGov == -1 || sent[b].depGov == -1)
 			return -2;

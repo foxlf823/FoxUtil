@@ -135,7 +135,8 @@ private:
 			 for(;j>=0;j--) {
 				 if(tempIndex<0)
 					 break;
-				 if(toLowercase(iter->at(j)) != toLowercase(s.at(tempIndex)))
+				 //if(toLowercase(iter->at(j)) != toLowercase(s.at(tempIndex)))
+				 if(iter->at(j) != s.at(tempIndex))
 					 break;
 				 tempIndex--;
 			 }
