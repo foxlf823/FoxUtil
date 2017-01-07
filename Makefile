@@ -1,13 +1,13 @@
 cc=g++
 
-cflags = -O0 -g3 -w -funroll-loops  \
+cflags = -O0 -g3 -w -msse3 -funroll-loops -std=c++11  \
 			
 
-libs = /usr/lib/libwordnet.a
+libs = 
 
 all: test
 
-test: test.cpp WordNet.h
+test: test.cpp 
 	$(cc) -o test test.cpp $(cflags) $(libs)
 
 	

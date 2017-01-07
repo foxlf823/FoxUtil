@@ -21,7 +21,7 @@ class Tokenizer {
 public:
 	Tokenizer(const string* otherSplitters=NULL) {
 		splitters.insert(' '); // default splitter
-		if(NULL!=otherSplitters) {
+		if(NULL!=otherSplitters  && !(*otherSplitters).empty()) {
 			ifstream ifs;
 			ifs.open(otherSplitters->c_str());
 			string line;

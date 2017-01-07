@@ -12,6 +12,7 @@
 #include <string>
 #include <fstream>
 #include "FoxUtil.h"
+#include "Punctuation.h"
 
 using namespace std;
 
@@ -33,7 +34,8 @@ public:
 				delimiters.insert(*iter);
 			}
 		}
-		if(NULL != abbrFilePath) {
+
+		if(NULL != abbrFilePath && !(*abbrFilePath).empty()) {
 			ifstream ifs;
 			ifs.open(abbrFilePath->c_str());
 			string line;
@@ -140,12 +142,19 @@ private:
 					 break;
 				 tempIndex--;
 			 }
-			 if(j<0) {
+			 if(j<0 && (tempIndex<0 || (tempIndex>=0 && (isEmptyChar(s.at(tempIndex)) || fox::Punctuation::isEnglishPunc(s.at(tempIndex)))))) {
 				 matchedAbbrLength = iter->length();
 				 break;
 			 }
 		 }
 		 return matchedAbbrLength;
+	 }
+
+	 bool isEmptyChar(char pp) {
+		 if(pp==' ' || pp=='\n' || pp=='\r' || pp=='\t')
+			 return true;
+		 else
+			 return false;
 	 }
 };
 

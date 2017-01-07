@@ -17,6 +17,27 @@ using namespace std;
 
 namespace fox {
 
+double precision(int correct, int predict) {
+	return 1.0*correct/predict;
+}
+
+double recall(int correct, int gold) {
+	return 1.0*correct/gold;
+}
+
+double f1(int correct, int gold, int predict) {
+	double p = precision(correct, predict);
+	double r = recall(correct, gold);
+
+	return 2*p*r/(p+r);
+}
+
+double f1(double p, double r) {
+
+	return 2*p*r/(p+r);
+}
+
+
 template<typename T>
 void dumpVector(const vector<T> & v, const string& name, int size) {
 	cout<< name <<": ";
@@ -62,6 +83,22 @@ string lexicalPattern(string str) {
 	}
 
 	return str;
+}
+
+void split_bystring(const string& str, vector<string>& vec, const string separator) {
+	//assert(vec.empty());
+	vec.clear();
+	string::size_type pos1 = 0, pos2 = 0;
+	string word;
+	while ((pos2 = str.find_first_of(separator, pos1)) != string::npos) {
+	  word = str.substr(pos1, pos2 - pos1);
+	  pos1 = pos2 + separator.size();
+	  //if (!word.empty())
+		vec.push_back(word);
+	}
+	word = str.substr(pos1);
+	//if (!word.empty())
+	  vec.push_back(word);
 }
 
 void split_bychar(const string& str, vector<string>& vec, const char separator = ' ') {
